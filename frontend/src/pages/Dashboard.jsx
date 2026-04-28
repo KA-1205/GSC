@@ -103,92 +103,108 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px' }}>
-        <div>
-          <h1 style={{ fontSize: '2rem', marginBottom: '8px', color: 'var(--text-primary)' }}>Dashboard</h1>
-          <p style={{ color: 'var(--text-secondary)', margin: 0 }}>Overview of your registered assets and propagation alerts.</p>
-        </div>
-        <Link to="/register" className="btn btn-primary">
-          <UploadCloud size={18} /> Register New Asset
-        </Link>
-      </div>
-
-      <div className="dashboard-grid">
-        <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <div style={{ background: 'rgba(99, 102, 241, 0.1)', padding: '16px', borderRadius: '16px' }}>
-            <FileText size={32} color="var(--accent-primary)" />
-          </div>
-          <div>
-            <p style={{ margin: '0 0 4px 0', color: 'var(--text-secondary)', fontWeight: 500 }}>Total Assets</p>
-            <h2 style={{ margin: 0, fontSize: '2rem', color: 'var(--text-primary)' }}>{stats.total}</h2>
-          </div>
-        </div>
+    <div style={{ display: 'grid', gridTemplateColumns: '55% 45%', minHeight: 'calc(100vh - var(--header-height))', width: '100%', margin: 0 }}>
+      {/* LEFT SIDE - BROWN */}
+      <div style={{ padding: '60px', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
+        {/* Crisp mustard-tinted decorative circle */}
+        <div style={{
+          position: 'absolute',
+          width: '700px', 
+          height: '700px',
+          borderRadius: '50%',
+          background: 'rgba(201, 146, 42, 0.05)',
+          border: '1px solid rgba(201, 146, 42, 0.15)',
+          top: '50%',
+          right: '-250px',
+          transform: 'translateY(-50%)',
+          pointerEvents: 'none'
+        }}></div>
         
-        <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '20px', borderColor: 'rgba(239, 68, 68, 0.2)' }}>
-          <div style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '16px', borderRadius: '16px' }}>
-            <Activity size={32} color="var(--danger)" />
-          </div>
-          <div>
-            <p style={{ margin: '0 0 4px 0', color: 'var(--danger)', fontWeight: 500 }}>Active Alerts</p>
-            <h2 style={{ margin: 0, fontSize: '2rem', color: 'var(--text-primary)' }}>{stats.flagged}</h2>
-          </div>
+        <div style={{ marginBottom: '60px', position: 'relative', zIndex: 1 }}>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '28px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ color: 'var(--gold)' }}>//</span> ASSET INTELLIGENCE
+          </p>
+          <h1 style={{ fontFamily: 'var(--font-head)', fontSize: 'clamp(2.8rem, 4vw, 3.8rem)', fontWeight: 900, lineHeight: 1.05, margin: 0, color: 'var(--text-primary)' }}>
+            Your content.<br />
+            <span style={{ color: 'var(--gold)' }}>Protected.</span><br />
+            Enforced.
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', marginTop: '24px', marginBottom: '36px', fontSize: '0.9rem', maxWidth: '380px', lineHeight: 1.7 }}>
+            Bitcoin-anchored fingerprinting for publishers. Court-ready evidence in 48 hours.
+          </p>
+          <Link to="/register" className="btn btn-primary" style={{ alignSelf: 'flex-start', padding: '14px 28px' }}>
+            REGISTER ASSET <ArrowRight size={16} />
+          </Link>
         </div>
 
-        <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <div style={{ background: 'rgba(16, 185, 129, 0.1)', padding: '16px', borderRadius: '16px' }}>
-            <ShieldAlert size={32} color="var(--success)" />
-          </div>
-          <div>
-            <p style={{ margin: '0 0 4px 0', color: 'var(--success)', fontWeight: 500 }}>Evidence Bundles</p>
-            <h2 style={{ margin: 0, fontSize: '2rem', color: 'var(--text-primary)' }}>{stats.bundles}</h2>
-          </div>
-        </div>
-      </div>
-
-      <h2 style={{ fontSize: '1.4rem', marginBottom: '16px', color: 'var(--text-primary)' }}>Recent Scan Activity</h2>
-      {error && <p style={{ color: 'var(--danger)' }}>{error}</p>}
-      <div className="table-container glass-panel">
-        <table>
-          <thead>
-            <tr>
-              <th>Asset Name</th>
-              <th>Domains Detected</th>
-              <th>Highest Risk</th>
-              <th>Last Scan</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
+        <h2 style={{ fontSize: '1.2rem', marginBottom: '16px', color: 'var(--text-primary)' }}>Recent Scan Activity</h2>
+        {error && <p style={{ color: 'var(--danger)' }}>{error}</p>}
+        <div className="table-container">
+          <table>
+            <thead>
               <tr>
-                <td colSpan={5} style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '18px' }}>
-                  Loading dashboard data...
-                </td>
+                <th>Asset Name</th>
+                <th>Domains Detected</th>
+                <th>Highest Risk</th>
+                <th>Action</th>
               </tr>
-            ) : recentScans.length === 0 ? (
-              <tr>
-                <td colSpan={5} style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '18px' }}>
-                  No assets found for this owner yet.
-                </td>
-              </tr>
-            ) : (
-              recentScans.map((scan) => (
-                <tr key={scan.id}>
-                  <td style={{ fontWeight: 500 }}>{scan.asset}</td>
-                  <td>{scan.domains} matches</td>
-                  <td><DomainRiskBadge riskScore={scan.highestRisk} /></td>
-                  <td style={{ color: 'var(--text-secondary)' }}>{scan.time}</td>
-                  <td>
-                    <Link to={`/asset/${scan.assetId}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.85rem', fontWeight: 600 }}>
-                      View Report <ArrowRight size={14} />
-                    </Link>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={4} style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '18px' }}>
+                    Loading dashboard data...
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : recentScans.length === 0 ? (
+                <tr>
+                  <td colSpan={4} style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '18px' }}>
+                    No assets found for this owner yet.
+                  </td>
+                </tr>
+              ) : (
+                recentScans.map((scan) => (
+                  <tr key={scan.id}>
+                    <td style={{ fontWeight: 500 }}>{scan.asset}</td>
+                    <td>{scan.domains} matches</td>
+                    <td><DomainRiskBadge riskScore={scan.highestRisk} /></td>
+                    <td>
+                      <Link to={`/asset/${scan.assetId}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.85rem', fontWeight: 600 }}>
+                        View <ArrowRight size={14} />
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* RIGHT SIDE - CREAM */}
+      <div style={{ background: 'var(--brown-card)', padding: '60px 40px', position: 'relative' }}>
+        {/* We need to override context manually here since we removed the global override */}
+        <div style={{ '--text-primary': 'var(--text-dark)', '--text-secondary': 'var(--text-dark2)', '--text-muted': '#665947', color: 'var(--text-primary)' }}>
+          <div className="dashboard-grid">
+            <div className="glass-card">
+              <p style={{ margin: '0 0 12px 0', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-mono)', fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Total Assets</p>
+              <h2 style={{ margin: 0, fontSize: '3rem', fontFamily: 'var(--font-head)', color: 'var(--text-primary)' }}>{stats.total}</h2>
+              <p style={{ margin: '8px 0 0 0', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Registered & fingerprinted</p>
+            </div>
+            
+            <div className="glass-card" style={{ borderLeft: '3px solid var(--danger)' }}>
+              <p style={{ margin: '0 0 12px 0', color: 'var(--danger)', fontWeight: 700, fontFamily: 'var(--font-mono)', fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Active Alerts</p>
+              <h2 style={{ margin: 0, fontSize: '3rem', fontFamily: 'var(--font-head)', color: 'var(--danger)' }}>{stats.flagged}</h2>
+              <p style={{ margin: '8px 0 0 0', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Unauthorized copies detected</p>
+            </div>
+
+            <div className="glass-card" style={{ background: 'var(--brown-base)', borderColor: 'var(--border-gold)' }}>
+              <p style={{ margin: '0 0 12px 0', color: 'var(--gold)', fontWeight: 700, fontFamily: 'var(--font-mono)', fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Evidence Bundles</p>
+              <h2 style={{ margin: 0, fontSize: '3rem', fontFamily: 'var(--font-head)', color: 'var(--text-cream)' }}>{stats.bundles}</h2>
+              <p style={{ margin: '8px 0 0 0', color: 'var(--text-warm)', fontSize: '0.85rem' }}>Immutable reports generated</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

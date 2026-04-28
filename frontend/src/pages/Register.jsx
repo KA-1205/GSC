@@ -90,7 +90,7 @@ const Register = () => {
               padding: '60px 20px', 
               textAlign: 'center',
               cursor: 'pointer',
-              background: 'rgba(0,0,0,0.2)',
+              background: 'var(--bg-glass)',
               transition: 'all 0.3s ease',
               borderColor: file ? 'var(--accent-primary)' : 'var(--border-light)'
             }}

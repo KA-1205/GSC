@@ -4,14 +4,16 @@ import { Bell, Search, User } from 'lucide-react';
 const Topbar = () => {
   return (
     <header className="topbar">
-      <div style={{ display: 'flex', alignItems: 'center', width: '100%', maxWidth: '600px' }}>
-        <Search size={20} color="var(--text-muted)" style={{ position: 'absolute', marginLeft: '16px' }} />
-        <input 
-          type="text" 
-          placeholder="Search registered assets, CIDs, or flagged domains..." 
-          className="form-control"
-          style={{ paddingLeft: '48px', borderRadius: '24px' }}
-        />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', width: '100%', maxWidth: '600px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', width: '100%', position: 'relative' }}>
+          <Search size={20} color="var(--text-muted)" style={{ position: 'absolute', marginLeft: '16px' }} />
+          <input 
+            type="text" 
+            placeholder="Search registered assets, CIDs, or flagged domains..." 
+            className="form-control"
+            style={{ paddingLeft: '48px', borderRadius: '24px', width: '100%' }}
+          />
+        </div>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
         <div style={{ position: 'relative', cursor: 'pointer' }}>
