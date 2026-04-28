@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Activity, ShieldAlert, FileText, UploadCloud, ArrowRight } from 'lucide-react';
 import DomainRiskBadge from '../components/DomainRiskBadge';
-
-const OWNER_ID = 'demo-user';
+import { apiUrl } from '../lib/api';
+import { getOwnerId } from '../lib/auth';
 
 const toRelativeTime = (iso) => {
   if (!iso) return 'Unknown';
@@ -31,11 +31,12 @@ const Dashboard = () => {
     const fetchDashboardData = async () => {
       setLoading(true);
       setError('');
+      const ownerId = getOwnerId();
 
       try {
         const [assetsRes, alertsRes] = await Promise.all([
-          fetch(`/api/v1/assets?owner_id=${encodeURIComponent(OWNER_ID)}`),
-          fetch(`/api/v1/alerts?owner_id=${encodeURIComponent(OWNER_ID)}`),
+          fetch(apiUrl(`/api/v1/assets?owner_id=${encodeURIComponent(ownerId)}`)),
+          fetch(apiUrl(`/api/v1/alerts?owner_id=${encodeURIComponent(ownerId)}`)),
         ]);
 
         const assetsData = await assetsRes.json();
@@ -54,7 +55,7 @@ const Dashboard = () => {
         const scanRows = await Promise.all(
           assets.slice(0, 8).map(async (asset) => {
             try {
-              const historyRes = await fetch(`/api/v1/scan/${asset.asset_id}/history`);
+              const historyRes = await fetch(apiUrl(`/api/v1/scan/${asset.asset_id}/history`));
               const historyData = await historyRes.json();
 
               const latest = historyRes.ok && Array.isArray(historyData) && historyData.length > 0

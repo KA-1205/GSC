@@ -41,6 +41,7 @@ class Settings(BaseSettings):
     # Gemini API
     # -------------------------------------------------------------------------
     GEMINI_API_KEY: str = ""
+    GEMINI_VISION_MODEL: str = "gemini-2.0-flash"
 
     # -------------------------------------------------------------------------
     # Vertex AI Matching Engine
@@ -73,8 +74,13 @@ class Settings(BaseSettings):
     # CORS
     # -------------------------------------------------------------------------
     CORS_ORIGINS: List[str] = Field(
-        default=["http://localhost:3000", "http://localhost:5173"]
+        default=[
+            "http://localhost:3000",
+            "http://localhost:5173",
+            "https://gsc-olive.vercel.app",
+        ]
     )
+    CORS_ORIGIN_REGEX: str = r"https://.*\.vercel\.app"
 
     # -------------------------------------------------------------------------
     # Rate Limiting

@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { UploadCloud, Image as ImageIcon, FileText, CheckCircle, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-const OWNER_ID = 'demo-user';
+import { apiUrl } from '../lib/api';
+import { getOwnerId } from '../lib/auth';
 
 const Register = () => {
   const [file, setFile] = useState(null);
@@ -28,10 +28,10 @@ const Register = () => {
     // Create FormData for the API
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('owner_id', OWNER_ID);
+    formData.append('owner_id', getOwnerId());
 
     try {
-      const response = await fetch('/api/v1/register', {
+      const response = await fetch(apiUrl('/api/v1/register'), {
         method: 'POST',
         body: formData,
       });
